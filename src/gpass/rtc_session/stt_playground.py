@@ -3,7 +3,7 @@
 import logging
 
 from livekit import agents
-from livekit.agents import AgentServer, AgentSession, room_io, vad
+from livekit.agents import AgentServer, AgentSession, room_io
 from livekit.plugins import silero
 
 from gpass.agents.default import Assistant
@@ -36,15 +36,16 @@ async def on_session_end(ctx: agents.JobContext) -> None:
 @agent_server.rtc_session(on_request=on_request, on_session_end=on_session_end)
 async def my_agent(ctx: agents.JobContext):
     """TODO."""
-    container = Container()
+    container = Container()  # dependency_injector
     lk_provider = await container.lk_provider.async_()
 
     await ctx.connect(auto_subscribe=agents.AutoSubscribe.AUDIO_ONLY)
 
+    vad: silero.VAD = ctx.proc.userdata[silero]
     session = AgentSession(
         turn_detection=await lk_provider.turn_detection(),
-        stt=await lk_provider.stt(),
-        vad=ctx.proc.userdata[vad],
+        stt=await lk_provider.stt(vad),
+        vad=vad,
         userdata=LKUserData(),
     )
 

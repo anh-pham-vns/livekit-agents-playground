@@ -35,7 +35,7 @@ async def default_agent(ctx: agents.JobContext):
         room=ctx.room,
         room_options=room_io.RoomOptions(
             audio_input=room_io.AudioInputOptions(
-                noise_cancellation=livekit._get_noise_cancellation
+                noise_cancellation=livekit._noise_cancellation_selector
             ),
             delete_room_on_close=True,
         ),

@@ -1,3 +1,5 @@
+"""TODO."""
+
 import logging
 from enum import StrEnum
 from typing import Protocol
@@ -10,26 +12,23 @@ from . import _llm, _stt, _tts
 logger = logging.getLogger(__name__)
 
 
-class ProviderModule[P, T](Protocol):
+class _ProviderModule[P, T](Protocol):
     Provider: type[P]
     REGISTRY: dict[P, Builds[type[T]]]
     __name__: str
 
 
 # Change the LiveKit providers here
-DEFAULTS: dict[ProviderModule, list[StrEnum]] = {
+DEFAULTS: dict[_ProviderModule, list[StrEnum]] = {
     _llm: [_llm.Provider.Sonnet_4_0, _llm.Provider.Sonnet_4_5],
-    _stt: [
-        _stt.Provider.Transcribe,
-        _stt.Provider.Chirp_3,
-    ],
+    _stt: [_stt.Provider.Chirp_3, _stt.Provider.Transcribe],
     _tts: [_tts.Provider.Chirp_3],
 }
 
 lk_store = ZenStore()
 
-for module in DEFAULTS:
-    selected_set = set(DEFAULTS[module])
+for module, default_list in DEFAULTS.items():
+    selected_set = set(default_list)
     registered_set = set(module.REGISTRY.keys())
     # _llm.py -> module=_llm -> group="llm" :D
     group = module.__name__.split(".")[-1].lstrip("_")
@@ -41,7 +40,7 @@ for module in DEFAULTS:
         )
 
         # Remove unregistered providers, keep order with list comprehension
-        providers = [p for p in DEFAULTS[module] if p in module.REGISTRY]
+        providers = [p for p in default_list if p in module.REGISTRY]
 
         # If the specified list is empty -> fallback to use all registered
         DEFAULTS[module] = providers if providers else list(module.REGISTRY.keys())
