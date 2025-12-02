@@ -6,18 +6,11 @@ from livekit import agents
 from livekit.agents import room_io
 from livekit.plugins import groq, silero
 
+from gpass.agents.default import Assistant
 from gpass.schema import LKUserData
 from gpass.services import livekit
 
 logger = logging.getLogger(__name__)
-
-
-class Assistant(agents.Agent):
-    """TODO."""
-
-    def __init__(self) -> None:
-        """TODO."""
-        super().__init__(instructions="Nothing")
 
 
 agent_server = agents.AgentServer()
@@ -30,9 +23,9 @@ async def default_agent(ctx: agents.JobContext):
 
     session = agents.AgentSession(
         turn_detection="vad",
-        stt=groq.STT(model="whisper-large-v3-turbo"),
+        stt=groq.STT(model="whisper-large-v3-turbo", detect_language=True),
         llm=groq.LLM(model="llama-3.3-70b-versatile"),
-        tts=groq.TTS(model="playai-tts", voice="Aaliyah-PlayAI"),
+        tts=groq.TTS(model="playai-tts"),
         vad=silero.VAD.load(),
         userdata=LKUserData(),
     )

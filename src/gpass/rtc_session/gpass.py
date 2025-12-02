@@ -3,24 +3,17 @@
 import logging
 
 from livekit import agents
-from livekit.agents import Agent, AgentServer, AgentSession, room_io, vad
+from livekit.agents import AgentServer, AgentSession, room_io, vad
 from livekit.plugins import silero
 
+from gpass.agents.default import Assistant
 from gpass.deps import Container
 from gpass.schema import LKUserData
 
 logger = logging.getLogger(__name__)
 
 
-class Assistant(Agent):
-    """TODO."""
-
-    def __init__(self) -> None:
-        """TODO."""
-        super().__init__(instructions="Nothing")
-
-
-server = AgentServer()
+agent_server = AgentServer()
 
 
 def prewarm(proc: agents.JobProcess):
@@ -28,7 +21,7 @@ def prewarm(proc: agents.JobProcess):
     proc.userdata[silero] = silero.VAD.load()
 
 
-server.setup_fnc = prewarm
+agent_server.setup_fnc = prewarm
 
 
 async def on_request(req: agents.JobRequest):
@@ -40,7 +33,7 @@ async def on_session_end(ctx: agents.JobContext) -> None:
     _ = ctx.make_session_report()
 
 
-@server.rtc_session(on_request=on_request, on_session_end=on_session_end)
+@agent_server.rtc_session(on_request=on_request, on_session_end=on_session_end)
 async def my_agent(ctx: agents.JobContext):
     """TODO."""
     container = Container()

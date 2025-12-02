@@ -1,22 +1,17 @@
 """TODO."""
 
+import os
+
 from livekit import agents
-from livekit.plugins import silero
 
-server = agents.AgentServer()
-
-
-def prewarm(proc: agents.JobProcess):
-    """TODO."""
-    proc.userdata[silero] = silero.VAD.load()
-
-
-server.setup_fnc = prewarm
+from gpass.rtc_session import default, gpass
 
 
 def main():
     """Main function."""
-    agents.cli.run_app(server)
+    mode = os.getenv("AGENT_MODE", "default")
+    agent_server = gpass.agent_server if mode == "gpass" else default.agent_server
+    agents.cli.run_app(agent_server)
 
 
 if __name__ == "__main__":
