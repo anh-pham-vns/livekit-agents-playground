@@ -14,12 +14,13 @@ logger = logging.getLogger(__name__)
 
 class Provider(StrEnum):
     Transcribe = auto()
-    Transcribe_Vocab = auto()
     Chirp_3 = auto()
 
 
 AWS = builds(aws.STT, language="th-TH")
-Google = builds(google.STT, languages="th-TH", detect_language=False)
+Google = builds(
+    google.STT, languages="th-TH", detect_language=False, use_streaming=False
+)
 
 REGISTRY: dict[Provider, Builds[type[stt.STT]]] = {
     Provider.Transcribe: AWS(),

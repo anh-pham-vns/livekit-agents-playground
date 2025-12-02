@@ -18,14 +18,8 @@ class ProviderModule[P, T](Protocol):
 
 # Change the LiveKit providers here
 DEFAULTS: dict[ProviderModule, list[StrEnum]] = {
-    _llm: [
-        _llm.Provider.Sonnet_4_0,
-        _llm.Provider.Sonnet_4_5,
-        _llm.Provider.Sonnet_4_0_Bak,
-        _llm.Provider.Sonnet_4_5_Bak,
-    ],
+    _llm: [_llm.Provider.Sonnet_4_0, _llm.Provider.Sonnet_4_5],
     _stt: [
-        _stt.Provider.Transcribe_Vocab,
         _stt.Provider.Transcribe,
         _stt.Provider.Chirp_3,
     ],
