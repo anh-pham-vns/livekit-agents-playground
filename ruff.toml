@@ -1,0 +1,51 @@
+fix = true
+
+[format]
+docstring-code-format = true
+
+[lint]
+select = [
+  "A",     # flake8-builtins
+  "ARG",   # flake8-unused-arguments 
+  "ASYNC", # flake8-async
+  "B",     # flake8-bugbear
+  "BLE",   # flake8-blind-except
+  "C4",    # flake8-comprehensions
+  "DTZ",   # flake8-datetimez
+  "FA",    # flake8-future-annotations
+  "G",     # flake8-logging-format
+  "LOG",   # flake8-logging
+  "PIE",   # flake8-pie
+  "PT",    # flake8-pytest-style
+  "PTH",   # flake8-use-pathlib
+  "RET",   # flake8-return
+  "RSE",   # flake8-raise
+  "S",     # flake8-bandit
+  "SIM",   # flake8-simplify
+  "T10",   # flake8-debugger
+  "T20",   # flake8-print
+  "TC",    # flake8-type-checking
+  #
+  "C90",  # mccabe
+  "D",    # pydocstylea
+  "F",    # Pyflakes
+  "FAST", # FastAPI
+  "FLY",  # flynt
+  "FURB", # refurb
+  "I",    # isort
+  "N",    # pep8-naming
+  "PERF", # Perflint
+  "PGH",  # pygrep-hooks
+  "PL",   # Pylint
+  "RUF",  # Ruff-specific rules
+  "UP",   # pyupgrade
+  #
+  "E", # pycodestyle
+  "W", # pycodestyle
+]
+ignore = [
+  "TC006", # runtime-cast-value
+]
+
+[lint.pydocstyle]
+convention = "google"
